@@ -1,14 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   BalanceHeader,
   BottomNav,
   GoalProgress,
   SavingsCard,
-  TransactionList,
   type Transaction,
+  TransactionList,
 } from "@/modules/dashboard/components";
-import { useEffect, useState } from "react";
 
 interface FinanceData {
   totalBalance: number;
@@ -34,11 +34,14 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadDashboardData() {
       try {
-        // TODO: Implementar chamada ao backend
-        // const response = await fetch('/api/dashboard');
-        // const data = await response.json();
-        // setTransactions(data.transactions);
-        // setFinanceData(data.summary);
+        const response = await fetch("/api/dashboard");
+        if (!response.ok) throw new Error("Erro ao carregar dados");
+
+        const data = await response.json();
+        setTransactions(data.transactions);
+        setFinanceData(data.summary);
+      } catch (error) {
+        console.error("Erro ao carregar dashboard:", error);
       } finally {
         setIsLoading(false);
       }
