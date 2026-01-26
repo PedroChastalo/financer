@@ -1,15 +1,15 @@
 "use client";
 
-import { signUp } from "@/lib/auth-client";
-import {
-  signupSchema,
-  type SignupInput,
-} from "@/modules/authentication/data/static/validators";
-import { cn, parseZodErrors } from "@/shared/utils";
 import { motion } from "framer-motion";
 import { Lock, Mail, User, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signUp } from "@/lib/auth-client";
+import {
+  type SignupInput,
+  signupSchema,
+} from "@/modules/authentication/data/static/validators";
+import { cn, parseZodErrors } from "@/shared/utils";
 
 export function SignupForm({
   className,
@@ -58,7 +58,7 @@ export function SignupForm({
           setServerError(ctx.error.message || "Erro ao criar conta");
           setLoading(false);
         },
-      }
+      },
     );
 
     if (error) {

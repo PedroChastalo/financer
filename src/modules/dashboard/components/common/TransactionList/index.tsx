@@ -9,7 +9,7 @@ import {
   ChevronRight,
   Coffee,
   Home,
-  LucideIcon,
+  type LucideIcon,
   ShoppingCart,
   TrendingDown,
   TrendingUp,
@@ -128,10 +128,10 @@ export function TransactionList({ transactions }: TransactionListProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return `${String(date.getHours()).padStart(2, "0")}:${String(
-      date.getMinutes()
+      date.getMinutes(),
     ).padStart(2, "0")} - ${date.getDate()} ${months[date.getMonth()].slice(
       0,
-      3
+      3,
     )}`;
   };
 

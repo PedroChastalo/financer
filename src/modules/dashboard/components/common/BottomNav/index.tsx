@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeftRight,
   Home,
-  LucideIcon,
+  type LucideIcon,
   PieChart,
   Settings,
   Target,

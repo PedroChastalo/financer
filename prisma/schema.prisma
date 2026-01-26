@@ -12,17 +12,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  email         String    @unique
-  name          String?
-  role          Role      @default(USER)
-  emailVerified Boolean   @default(false)
-  image         String?
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  email           String           @unique
+  name            String?
+  role            Role             @default(USER)
+  emailVerified   Boolean          @default(false)
+  image           String?
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  financeAccounts FinanceAccount[] @relation("UserFinanceAccounts")
 
   @@map("user")
 }
@@ -66,6 +68,120 @@ model Account {
 
   @@index([userId])
   @@map("account")
+}
+
+model FinanceAccount {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation("UserFinanceAccounts", fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  type         AccountType
+  balance      Float         @default(0)
+  color        String
+  icon         String?
+  creditLimit  Float?
+  closingDay   Int?
+  dueDay       Int?
+  isArchived   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@index([userId])
+  @@map("finance_account")
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CREDIT_CARD
+  INVESTMENT
+  CASH
+}
+
+model Transaction {
+  id                 String            @id @default(cuid())
+  userId             String
+  accountId          String
+  account            FinanceAccount    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  type               TransactionType
+  amount             Float
+  description        String
+  category           String
+  date               DateTime
+  status             TransactionStatus @default(COMPLETED)
+  installments       Int?
+  currentInstallment Int?
+  notes              String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([date])
+  @@map("transaction")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+model Budget {
+  id             String          @id @default(cuid())
+  userId         String
+  accountId      String?
+  account        FinanceAccount? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  category       String
+  limit          Float
+  spent          Float           @default(0)
+  period         BudgetPeriod    @default(MONTHLY)
+  alertThreshold Int             @default(80)
+  startDate      DateTime
+  endDate        DateTime
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([accountId])
+  @@map("budget")
+}
+
+enum BudgetPeriod {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+model Goal {
+  id            String     @id @default(cuid())
+  userId        String
+  name          String
+  description   String?
+  targetAmount  Float
+  currentAmount Float      @default(0)
+  deadline      DateTime?
+  status        GoalStatus @default(IN_PROGRESS)
+  icon          String?
+  color         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([userId])
+  @@map("goal")
+}
+
+enum GoalStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }
 
 model Verification {

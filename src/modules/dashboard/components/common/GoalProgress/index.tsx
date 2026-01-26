@@ -58,16 +58,16 @@ export function GoalProgress({ current, goal, percentage }: GoalProgressProps) {
             calculatedPercentage <= 30
               ? "text-cyan-400"
               : calculatedPercentage <= 60
-              ? "text-purple-400"
-              : "text-orange-400"
+                ? "text-purple-400"
+                : "text-orange-400"
           }`}
         />
         <span className="text-purple-300/70 text-sm">
           {calculatedPercentage <= 30
             ? `${calculatedPercentage}% das suas despesas. Ótimo controle!`
             : calculatedPercentage <= 60
-            ? "Mantenha o foco no seu objetivo!"
-            : "Atenção: revise seus gastos."}
+              ? "Mantenha o foco no seu objetivo!"
+              : "Atenção: revise seus gastos."}
         </span>
       </motion.div>
     </motion.div>

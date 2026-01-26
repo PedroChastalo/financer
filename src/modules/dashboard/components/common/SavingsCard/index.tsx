@@ -91,7 +91,7 @@ export function SavingsCard({
                     R${" "}
                     {revenueLastWeek?.toLocaleString("pt-BR", {
                       minimumFractionDigits: 2,
-                    }) || "4.000,00"}
+                    }) || "00"}
                   </p>
                 </div>
               </div>
