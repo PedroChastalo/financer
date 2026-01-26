@@ -1,6 +1,6 @@
 export {
-  loginSchema,
-  signupSchema,
   type LoginInput,
+  loginSchema,
   type SignupInput,
+  signupSchema,
 } from "./auth";

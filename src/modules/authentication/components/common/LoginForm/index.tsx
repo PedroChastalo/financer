@@ -1,15 +1,15 @@
 "use client";
 
-import { signIn } from "@/lib/auth-client";
-import {
-  loginSchema,
-  type LoginInput,
-} from "@/modules/authentication/data/static/validators";
-import { cn, parseZodErrors } from "@/shared/utils";
 import { motion } from "framer-motion";
 import { Lock, LogIn, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signIn } from "@/lib/auth-client";
+import {
+  type LoginInput,
+  loginSchema,
+} from "@/modules/authentication/data/static/validators";
+import { cn, parseZodErrors } from "@/shared/utils";
 
 export function LoginForm({
   className,
@@ -56,7 +56,7 @@ export function LoginForm({
           setServerError(ctx.error.message || "Email ou senha inválidos");
           setLoading(false);
         },
-      }
+      },
     );
 
     if (error) {
